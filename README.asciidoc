@@ -1,0 +1,131 @@
+This tool helps create typical committishs (e.g. `master..@`), so that you
+don't have to.
+
+One example would be to list all the commits of all the branches, except the
+ones shared in all the branches.
+
+You can achieve that with:
+
+  git log --branches --remotes ^master
+
+But what if the base is not `master`, but some other base you are not sure of?
+
+You can find the base with:
+
+  git merge-base $(git rev-parse --branches --remotes)
+
+And then use that base as a negative ref, so:
+
+  git log --branches --remotes --not $base
+
+It's much easier with `git smartlist`:
+
+  git log $(git smartlist all)
+
+Then you can create an alias:
+
+  alias gla='git log $(git smartlist all)'
+
+There are five shorthands that `git smartlist` can help with.
+
+== Aliases ==
+
+The best way to use `git smartlist` is to setup aliases to the different modes,
+for example, `glb` would be the equivalent of `git log $(git smartlist branches)`.
+
+Place the following on your `~/.bashrc` or `~/.zshrc`.
+
+  gk() { gitk "$@" & }
+  gl() { git log --oneline --decorate --graph --boundary "$@" ; }
+
+  gks() { gk $(git smartlist $@) ; }
+  gls() { gl $(git smartlist $@) ; }
+
+  alias gka='gks all' gla='gls all'
+  alias gkb='gks branches' glb='gls branches'
+  alias gkm='gks from' glm='gls from'
+  alias gku='gks from-upstream' glu='gls from-upstream'
+  alias gkn='gks negate-upstreams' gln='gls negate-upstreams'
+
+== Usage ==
+
+=== all ===
+
+This mode is equivalent to:
+
+  $ git smartlist all
+  => --branches --remotes --not $merge_base
+
+=== branches ===
+
+By default this mode is the equivalent of:
+
+  $ git smartlist branches
+  => --branches --not $merge_base
+
+However, multiple branches can be specified
+
+  $ git smartlist branches next feature-a
+  => next feature-a --not $merge_base
+
+Prefixes and namespaces can be specified too:
+
+  $ git smartlist branches fc/
+  => --branches=fc/ --not $merge_base
+
+=== from ===
+
+By default this mode is the equivalent of:
+
+  $ git smartlist from
+  => master..@
+
+But you can specify the branch:
+
+  $ git smartlist from feature-a
+  => master..feature-a
+
+You can also specify the starting point:
+
+  $ git smartlist from feature-a next
+  => next..feature-a
+
+=== from-upstream ===
+
+By default this mode is the equivalent of:
+
+  $ git smartlist from-upstream
+  => @{upstream}..@
+
+If there's no upstream configured `master` is used by default.
+
+You can also specify the branch:
+
+  $ git smartlist from-upstream feature-a
+  => feature-a@{upstream}..feature-a
+
+=== negate-upstreams ===
+
+This is the equivalent of multiple `from-upstream` commands; all their upstrams
+are negated:
+
+  $ git smartlist negate-upstreams next feature-a
+  => next@{u}..next feature@{u}..feature
+
+== Configuration ==
+
+`git smartlist` can be configured globally, or per repository.
+
+=== smartlist.merge-base ===
+
+Whether to use the merge-base functionality. If not set
+`git smartlist branches` would simply do `--branches`.
+
+Default: false
+
+=== smartlist.friendly ===
+
+Whether to use friendly names. If not set git IDs (SHA-1) are used instead of
+refnames.
+
+Default: false
