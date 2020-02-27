@@ -1,0 +1,118 @@
+#!/bin/bash
+
+[[ "$(git config --type=bool smartlist.friendly)" == "true" ]] &&
+friendly=y
+
+[[ "$(git config --type=bool smartlist.merge-base)" == "true" ]] &&
+merge_base=y
+
+get_refs() {
+	local refs base
+
+	refs=($(git rev-parse --symbolic "$@"))
+	if [[ -n "$merge_base" && ${#refs[@]} > 1 ]]; then
+		base=$(git merge-base ${refs[@]})
+		[[ -n "$friendly" ]] &&
+		base=$(git name-rev --always --name-only "${refs[@]/#/--refs=}" $base)
+		echo "$@ --not $base"
+	else
+		echo "$@"
+	fi
+}
+
+parse_branches() {
+	local opt
+
+	if [[ $# -eq 0 ]]; then
+		echo '--branches'
+	else
+		for opt in "$@"; do
+			case "$opt" in
+				*\*|*/) echo "--branches=$opt" ;;
+				*) echo "$opt" ;;
+			esac
+		done
+	fi
+}
+
+get_from() {
+	local branch=${1:-@} from=${2:-master}
+	echo "$from..$branch"
+}
+
+get_from_upstream() {
+	local branch=${1:-@} default="${2-master}"
+	local u c
+	u="${branch}@{u}"
+	c=$(git rev-parse --verify --quiet "$u") || u=$default
+	echo "${u}..$branch"
+}
+
+negate_upstreams() {
+	local branches b
+
+	branches="$(git rev-parse --symbolic $@)"
+	for b in $branches; do
+		get_from_upstream "$b"
+	done
+}
+
+usage() {
+	cat <<-EOF
+	usage: $(basename $0) <action>
+
+	Action
+	    all
+	    branches [<branches>]
+	    from [<branch>] [<from>]
+	    from-upstream [<branch>] [<default>]
+	    negate-upstreams <branches>
+	EOF
+}
+
+get_list() {
+	local cmd opts IFS=$'\n' 
+
+	if [[ -z "$1" ]]; then
+		usage
+		exit 1
+	fi
+
+	git rev-parse --git-dir > /dev/null || exit 1
+
+	cmd=$1
+	shift
+
+	while test -n "$1"; do
+		test "$1" == '--' && break
+		opts="${opts+${opts}$'\n'}$1"
+		shift
+	done
+
+	case $cmd in
+	all)
+		opts="$(get_refs --branches --remotes $opts)"
+		;;
+	branches)
+		opts="$(get_refs $(parse_branches $opts))"
+		;;
+	from)
+		opts="$(get_from $opts)"
+		;;
+	from-upstream)
+		opts="$(get_from_upstream $opts)"
+		;;
+	negate-upstreams)
+		opts="$(negate_upstreams $opts)"
+		;;
+	*)
+		echo "Unknown command '$cmd'" >&2
+		usage
+		exit 1
+		;;
+	esac
+
+	echo "${opts}${@+ $@}"
+}
+
+get_list "$@"
