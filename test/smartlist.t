@@ -4,20 +4,20 @@ test_description='Test git smartlist'
 
 . ./test-lib.sh
 
-test_smartlist() {
+test_smartlist () {
 	cat > expected &&
 	git smartlist $@ > actual &&
 	cat actual &&
 	test_cmp expected actual
 }
 
-test_commit() {
+test_commit () {
 	echo "$1" > content &&
 	git add content &&
 	git commit -q -m "$1"
 }
 
-setup() {
+setup () {
 	git config --global --type=bool smartlist.friendly true &&
 	git config --global --type=bool smartlist.merge-base true &&
 

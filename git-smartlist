@@ -6,7 +6,7 @@ friendly=y
 [[ "$(git config --type=bool smartlist.merge-base)" == "true" ]] &&
 merge_base=y
 
-get_refs() {
+get_refs () {
 	local refs base
 
 	refs=($(git rev-parse --symbolic "$@"))
@@ -20,7 +20,7 @@ get_refs() {
 	fi
 }
 
-parse_branches() {
+parse_branches () {
 	local opt
 
 	if [[ $# -eq 0 ]]; then
@@ -35,12 +35,12 @@ parse_branches() {
 	fi
 }
 
-get_from() {
+get_from () {
 	local branch=${1:-@} from=${2:-master}
 	echo "$from..$branch"
 }
 
-get_from_upstream() {
+get_from_upstream () {
 	local branch=${1:-@} default="${2-master}"
 	local u c
 	u="${branch}@{u}"
@@ -48,7 +48,7 @@ get_from_upstream() {
 	echo "${u}..$branch"
 }
 
-negate_upstreams() {
+negate_upstreams () {
 	local branches b
 
 	branches="$(git rev-parse --symbolic $@)"
@@ -57,7 +57,7 @@ negate_upstreams() {
 	done
 }
 
-usage() {
+usage () {
 	cat <<-EOF
 	usage: $(basename $0) <action>
 
@@ -70,7 +70,7 @@ usage() {
 	EOF
 }
 
-get_list() {
+get_list () {
 	local cmd opts IFS=$'\n' 
 
 	if [[ -z "$1" ]]; then
