@@ -44,7 +44,8 @@ get_from_upstream () {
 	local branch=${1:-@} default="${2-master}"
 	local u c
 	u="${branch}@{u}"
-	c=$(git rev-parse --verify --quiet "$u") || u=$default
+	# XXX git isn't quiet
+	c=$(git rev-parse --verify --quiet "$u" 2> /dev/null) || u=$default
 	echo "${u}..$branch"
 }
 
