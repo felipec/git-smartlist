@@ -1,4 +1,4 @@
-This tool helps create typical committishs (e.g. `master..@`), so that you
+This tool helps create typical revisions (e.g. `master..@`), so that you
 don't have to.
 
 One example would be to list all the commits of all the branches, except the
@@ -6,25 +6,25 @@ ones shared in all the branches.
 
 You can achieve that with:
 
-  git log --branches --remotes ^master
+  git log --branches ^master
 
 But what if the base is not `master`, but some other base you are not sure of?
 
 You can find the base with:
 
-  git merge-base $(git rev-parse --branches --remotes)
+  git merge-base $(git rev-parse --branches)
 
 And then use that base as a negative ref, so:
 
-  git log --branches --remotes --not $base
+  git log --branches ^$base
 
 It's much easier with `git smartlist`:
 
-  git log $(git smartlist all)
+  git log $(git smartlist branches)
 
 Then you can create an alias:
 
-  alias gla='git log $(git smartlist all)'
+  alias glb='git log $(git smartlist branches)'
 
 There are five shorthands that `git smartlist` can help with.
 
