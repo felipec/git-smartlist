@@ -74,11 +74,6 @@ usage () {
 get_list () {
 	local cmd opts IFS=$'\n' 
 
-	if [[ -z "$1" ]]; then
-		usage
-		exit 1
-	fi
-
 	git rev-parse --git-dir > /dev/null || exit 1
 
 	cmd=$1
@@ -115,5 +110,10 @@ get_list () {
 
 	echo "${opts}${@+ $@}"
 }
+
+if [[ -z "$1" ]]; then
+	usage
+	exit 1
+fi
 
 get_list "$@"
