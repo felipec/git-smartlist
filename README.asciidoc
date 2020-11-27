@@ -97,7 +97,7 @@ By default this mode is the equivalent of:
   $ git smartlist from-upstream
   => @{upstream}..@
 
-If there's no upstream configured `master` is used by default.
+If there's no upstream configured, `master` is used by default.
 
 You can also specify the branch:
 
