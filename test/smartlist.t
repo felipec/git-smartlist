@@ -19,7 +19,6 @@ test_commit () {
 
 setup () {
 	git config --global --type=bool smartlist.friendly true &&
-	git config --global --type=bool smartlist.merge-base true &&
 
 	git init -q &&
 

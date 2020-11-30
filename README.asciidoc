@@ -121,7 +121,7 @@ are negated:
 Whether to use the merge-base functionality. If not set
 `git smartlist branches` would simply do `--branches`.
 
-Default: false
+Default: true
 
 === smartlist.friendly ===
 

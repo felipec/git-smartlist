@@ -1,10 +1,10 @@
 #!/bin/bash
 
+[[ "$(git config --type=bool smartlist.merge-base)" == "false" ]] ||
+merge_base=y
+
 [[ "$(git config --type=bool smartlist.friendly)" == "true" ]] &&
 friendly=y
-
-[[ "$(git config --type=bool smartlist.merge-base)" == "true" ]] &&
-merge_base=y
 
 get_refs () {
 	local refs base
