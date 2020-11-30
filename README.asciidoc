@@ -64,12 +64,12 @@ By default it's the equivalent of
   $ git smartlist specific
   => @{upstream}..@
 
-However, if more than one is specified:
+However, if more than one branch is specified:
 
   $ git smartlist specific next feature-a
   => next feature-a --not $merge_base
 
-So basically it's a mixture of `from-upstream` and `branches`.
+So, basically it's a mixture of `from-upstream` and `branches`.
 
 === all ===
 
