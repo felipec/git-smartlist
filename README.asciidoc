@@ -59,10 +59,15 @@ You can pick any name you want, and only the modes you need, but the two I use t
 
 This mode is basically saying: show me this specific branch/branches.
 
-By default it's the equivalent of
+By default, it's the equivalent of:
 
   $ git smartlist specific
   => @{upstream}..@
+
+If you specify a branch:
+
+  $ git smartlist specific feature-a
+  => feature-a@{upstream}..feature-a
 
 However, if more than one branch is specified:
 
