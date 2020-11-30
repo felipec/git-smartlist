@@ -128,7 +128,7 @@ You can also specify the branch:
 
 === negate-upstreams ===
 
-This is the equivalent of multiple `from-upstream` commands; all their upstrams
+This is the equivalent of multiple `from-upstream` commands; all their upstreams
 are negated:
 
   $ git smartlist negate-upstreams next feature-a
