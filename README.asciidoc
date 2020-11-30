@@ -20,32 +20,37 @@ And then use that base as a negative ref, so:
 
 It's much easier with `git smartlist`:
 
-  git log $(git smartlist branches)
+  git smartlist log branches
 
 Then you can create an alias:
 
-  alias glb='git log $(git smartlist branches)'
+  git config --global alias.lb 'smartlist log branches'
 
 There are five shorthands that `git smartlist` can help with.
 
 == Aliases ==
 
 The best way to use `git smartlist` is to setup aliases to the different modes,
-for example, `glb` would be the equivalent of `git log $(git smartlist branches)`.
+for example, `git lb` would be the equivalent of `git smartlist log branches`.
 
-Place the following on your `~/.bashrc` or `~/.zshrc`.
+First you will need a good log alias, for example 'lg':
 
-  gk() { gitk "$@" & }
-  gl() { git log --oneline --decorate --graph --boundary "$@" ; }
+  git config --global alias.lg 'log --oneline --decorate --boundary --graph'
 
-  gks() { gk $(git smartlist $@) ; }
-  gls() { gl $(git smartlist $@) ; }
+Then you can add the following to your configuration (`git config --global --edit`):
 
-  alias gka='gks all' gla='gls all'
-  alias gkb='gks branches' glb='gls branches'
-  alias gkm='gks from' glm='gls from'
-  alias gku='gks from-upstream' glu='gls from-upstream'
-  alias gkn='gks negate-upstreams' gln='gls negate-upstreams'
+  [alias]
+    lm = smartlist lg from
+    lc = smartlist lg from-upstream
+    la = smartlist lg all
+    lb = smartlist lg branches
+    ln = smartlist lg negate-upstreams
+
+You can pick any name you want, and only the modes you need, but the two I use the most are:
+
+  git lc # shows only the commits of the current branch
+  git lb # shows the commits from all the local branches
+  git lb fc/ # shows the commits from the local branches that start with fc/
 
 == Usage ==
 

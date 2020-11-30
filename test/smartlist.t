@@ -6,7 +6,7 @@ test_description='Test git smartlist'
 
 test_smartlist () {
 	cat > expected &&
-	git smartlist $@ > actual &&
+	git smartlist echo $@ > actual &&
 	cat actual &&
 	test_cmp expected actual
 }

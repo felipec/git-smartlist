@@ -111,9 +111,19 @@ get_list () {
 	echo "${opts}${@+ $@}"
 }
 
+main () {
+	local cmd=$1
+	shift
+	if [[ $cmd = "echo" ]]; then
+		get_list "$@"
+	else
+		git $cmd $(get_list "$@")
+	fi
+}
+
 if [[ -z "$1" ]]; then
 	usage
 	exit 1
 fi
 
-get_list "$@"
+main "$@"
