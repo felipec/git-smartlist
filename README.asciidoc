@@ -40,6 +40,7 @@ First you will need a good log alias, for example 'lg':
 Then you can add the following to your configuration (`git config --global --edit`):
 
   [alias]
+    ls = smartlist lg specific
     lm = smartlist lg from
     lc = smartlist lg from-upstream
     la = smartlist lg all
@@ -48,11 +49,27 @@ Then you can add the following to your configuration (`git config --global --edi
 
 You can pick any name you want, and only the modes you need, but the two I use the most are:
 
-  git lc # shows only the commits of the current branch
+  git ls # shows only the commits of the current branch
   git lb # shows the commits from all the local branches
   git lb fc/ # shows the commits from the local branches that start with fc/
 
 == Usage ==
+
+=== specific ===
+
+This mode is basically saying: show me this specific branch/branches.
+
+By default it's the equivalent of
+
+  $ git smartlist specific
+  => @{upstream}..@
+
+However, if more than one is specified:
+
+  $ git smartlist specific next feature-a
+  => next feature-a --not $merge_base
+
+So basically it's a mixture of `from-upstream` and `branches`.
 
 === all ===
 

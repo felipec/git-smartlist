@@ -131,4 +131,23 @@ test_expect_success 'negate-upstreams' '
 	EOF
 '
 
+test_expect_success 'specific' '
+	git checkout feature &&
+	test_smartlist specific <<-\EOF
+	@@{u}..@
+	EOF
+'
+
+test_expect_success 'specific: branch' '
+	test_smartlist specific feature <<-\EOF
+	feature@{u}..feature
+	EOF
+'
+
+test_expect_success 'specific: multiple branches' '
+	test_smartlist specific master feature <<-\EOF
+	master feature --not feature~1
+	EOF
+'
+
 test_done

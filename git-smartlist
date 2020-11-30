@@ -58,11 +58,20 @@ negate_upstreams () {
 	done
 }
 
+get_specific () {
+	if [[ $# -lt 2 ]]; then
+		get_from_upstream "$1"
+	else
+		get_refs $(parse_branches $@)
+	fi
+}
+
 usage () {
 	cat <<-EOF
 	usage: $(basename $0) <action>
 
 	Action
+	    specific [<branches>]
 	    all
 	    branches [<branches>]
 	    from [<branch>] [<from>]
@@ -100,6 +109,9 @@ get_list () {
 		;;
 	negate-upstreams)
 		opts="$(negate_upstreams $opts)"
+		;;
+	specific)
+		opts="$(get_specific $opts)"
 		;;
 	*)
 		echo "Unknown command '$cmd'" >&2
