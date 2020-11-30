@@ -28,6 +28,12 @@ Then you can create an alias:
 
 There are five shorthands that `git smartlist` can help with.
 
+== Installation ==
+
+Simply copy the script anywhere in your '$PATH' and make it
+executable, or run `make install` which will install it by default to
+your '~/bin/' directory (make sure it's in your '$PATH').
+
 == Aliases ==
 
 The best way to use `git smartlist` is to setup aliases to the different modes,
