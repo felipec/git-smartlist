@@ -9,12 +9,13 @@ get_refs () {
 	[[ "$(git config --type=bool smartlist.friendly)" == "true" ]] &&
 	friendly=y
 
+	# shellcheck disable=SC2207
 	refs=($(git rev-parse --symbolic "$@"))
-	if [[ -n "$merge_base" && ${#refs[@]} > 1 ]]; then
-		base=$(git merge-base ${refs[@]})
+	if [[ -n "$merge_base" && ${#refs[@]} -gt 1 ]]; then
+		base=$(git merge-base "${refs[@]}")
 		[[ -n "$friendly" ]] &&
 		base=$(git name-rev --always --name-only "${refs[@]/#/--refs=}" $base)
-		echo "$@ --not $base"
+		echo "$@" "--not $base"
 	else
 		echo "$@"
 	fi
@@ -42,17 +43,16 @@ get_from () {
 
 get_from_upstream () {
 	local branch=${1:-@} default="${2-master}"
-	local u c
-	u="${branch}@{u}"
+	local u="${branch}@{u}"
 	# XXX git isn't quiet
-	c=$(git rev-parse --verify --quiet "$u" 2> /dev/null) || u=$default
+	git rev-parse --verify --quiet "$u" > /dev/null 2>&1 || u=$default
 	echo "${u}..$branch"
 }
 
 negate_upstreams () {
 	local branches b
 
-	branches="$(git rev-parse --symbolic $@)"
+	branches="$(git rev-parse --symbolic "$@")"
 	for b in $branches; do
 		get_from_upstream "$b"
 	done
@@ -62,7 +62,7 @@ get_specific () {
 	if [[ $# -lt 2 ]]; then
 		get_from_upstream "$1"
 	else
-		get_refs $(parse_branches $@)
+		get_refs $(parse_branches "$@")
 	fi
 }
 
@@ -81,7 +81,7 @@ usage () {
 }
 
 get_list () {
-	local cmd opts IFS=$'\n' 
+	local cmd opts IFS=$'\n'
 
 	git rev-parse --git-dir > /dev/null || exit 1
 
@@ -120,7 +120,7 @@ get_list () {
 		;;
 	esac
 
-	echo "${opts}${@+ $@}"
+	echo "${opts}""${1+ $@}"
 }
 
 main () {
