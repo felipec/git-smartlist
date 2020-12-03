@@ -1,13 +1,13 @@
 #!/bin/bash
 
-[[ "$(git config --type=bool smartlist.merge-base)" == "false" ]] ||
-merge_base=y
-
-[[ "$(git config --type=bool smartlist.friendly)" == "true" ]] &&
-friendly=y
-
 get_refs () {
-	local refs base
+	local refs base merge_base friendly
+
+	[[ "$(git config --type=bool smartlist.merge-base)" == "false" ]] ||
+	merge_base=y
+
+	[[ "$(git config --type=bool smartlist.friendly)" == "true" ]] &&
+	friendly=y
 
 	refs=($(git rev-parse --symbolic "$@"))
 	if [[ -n "$merge_base" && ${#refs[@]} > 1 ]]; then
