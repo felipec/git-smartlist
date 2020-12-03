@@ -150,4 +150,10 @@ test_expect_success 'specific: multiple branches' '
 	EOF
 '
 
+test_expect_success 'main: check revision range' '
+	test_smartlist specific master..feature <<-\EOF
+	master..feature
+	EOF
+'
+
 test_done

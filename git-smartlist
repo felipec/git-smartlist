@@ -88,6 +88,12 @@ get_list () {
 	cmd=$1
 	shift
 
+	# If a range is already specified, don't do anything
+	if [[ "$1" = *".."* ]]; then
+		echo "$@"
+		return
+	fi
+
 	while test -n "$1"; do
 		test "$1" == '--' && break
 		opts="${opts+${opts}$'\n'}$1"
