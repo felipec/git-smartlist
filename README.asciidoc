@@ -1,30 +1,34 @@
 This tool helps create typical revisions (e.g. `master..@`), so that you
 don't have to.
 
-One example would be to list all the commits of all the branches, except the
-ones shared in all the branches.
+For example, if you want to quickly see the commits of the current branch, you
+can do the following:
 
-You can achieve that with:
+  git log --oneline master..@
 
-  git log --branches ^master
+But what if your current branch is not based on master, but say "development"?
+You can type `development..@`, but it gets tedious to do this for every branch.
 
-But what if the base is not `master`, but some other base you are not sure of?
+You could of course configure the upstream tracking branch of you current branch,
+and then you can just do:
 
-You can find the base with:
+  git log --oneline @{upstream}..@
 
-  git merge-base $(git rev-parse --branches)
+That's *if* you have configured the upstream tracking branch.
 
-And then use that base as a negative ref, so:
+`git-smartlist` can figure out what revision you would want with the
+`from-upstream` option:
 
-  git log --branches ^$base
+  git smartlist log from-upstream
 
-It's much easier with `git smartlist`:
+Then you can create an alias for that:
 
-  git smartlist log branches
+  git config --global alias.ls 'smartlist log from-upstream'
 
-Then you can create an alias:
+In order so you don't have to keep track of all this, or type anything,
+`git-smartlist` allows you to just do:
 
-  git config --global alias.lb 'smartlist log branches'
+  git ls
 
 There are five shorthands that `git smartlist` can help with.
 
