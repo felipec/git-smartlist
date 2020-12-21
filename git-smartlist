@@ -67,7 +67,7 @@ get_specific () {
 }
 
 usage () {
-	cat <<-EOF
+	cat <<-EOF >&2
 	usage: $(basename $0) <action>
 
 	Action

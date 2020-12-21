@@ -41,7 +41,7 @@ setup () {
 setup
 
 test_expect_success 'usage' '
-	test_must_fail git smartlist > usage &&
+	test_must_fail git smartlist 2> usage &&
 	grep -q "usage: " usage
 '
 
