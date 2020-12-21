@@ -135,7 +135,9 @@ main () {
 	if [[ $cmd = "echo" ]]; then
 		get_list "$@"
 	else
-		git $cmd $(get_list "$@")
+		# Clearly a bug in POSIX
+		rev="$(get_list "$@")" || exit $?
+		git $cmd $rev
 	fi
 }
 
