@@ -3,10 +3,10 @@
 get_refs () {
 	local refs base merge_base friendly
 
-	[[ "$(git config --type=bool smartlist.merge-base)" == "false" ]] ||
+	[[ "$(git config --bool smartlist.merge-base)" == "false" ]] ||
 	merge_base=y
 
-	[[ "$(git config --type=bool smartlist.friendly)" == "true" ]] &&
+	[[ "$(git config --bool smartlist.friendly)" == "true" ]] &&
 	friendly=y
 
 	# shellcheck disable=SC2207

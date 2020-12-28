@@ -18,7 +18,7 @@ test_commit () {
 }
 
 setup () {
-	git config --global --type=bool smartlist.friendly true &&
+	git config --global --bool smartlist.friendly true &&
 
 	git init -q &&
 
