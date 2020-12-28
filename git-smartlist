@@ -68,7 +68,11 @@ get_specific () {
 
 usage () {
 	cat <<-EOF >&2
-	usage: $(basename $0) <action>
+	usage: $(basename $0) <command> <action>
+
+	Command
+	    echo (display the output)
+	    * (a git command, e.g. log)
 
 	Action
 	    specific [<branches>]

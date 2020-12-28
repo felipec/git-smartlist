@@ -71,17 +71,17 @@ This mode is basically saying: show me this specific branch/branches.
 
 By default, it's the equivalent of:
 
-  $ git smartlist specific
+  $ git smartlist echo specific
   => @{upstream}..@
 
 If you specify a branch:
 
-  $ git smartlist specific feature-a
+  $ git smartlist echo specific feature-a
   => feature-a@{upstream}..feature-a
 
 However, if more than one branch is specified:
 
-  $ git smartlist specific next feature-a
+  $ git smartlist echo specific next feature-a
   => next feature-a --not $merge_base
 
 So, basically it's a mixture of `from-upstream` and `branches`.
@@ -90,55 +90,55 @@ So, basically it's a mixture of `from-upstream` and `branches`.
 
 This mode is equivalent to:
 
-  $ git smartlist all
+  $ git smartlist echo all
   => --branches --remotes --not $merge_base
 
 === branches ===
 
 By default this mode is the equivalent of:
 
-  $ git smartlist branches
+  $ git smartlist echo branches
   => --branches --not $merge_base
 
 However, multiple branches can be specified
 
-  $ git smartlist branches next feature-a
+  $ git smartlist echo branches next feature-a
   => next feature-a --not $merge_base
 
 Prefixes and namespaces can be specified too:
 
-  $ git smartlist branches fc/
+  $ git smartlist echo branches fc/
   => --branches=fc/ --not $merge_base
 
 === from ===
 
 By default this mode is the equivalent of:
 
-  $ git smartlist from
+  $ git smartlist echo from
   => master..@
 
 But you can specify the branch:
 
-  $ git smartlist from feature-a
+  $ git smartlist echo from feature-a
   => master..feature-a
 
 You can also specify the starting point:
 
-  $ git smartlist from feature-a next
+  $ git smartlist echo from feature-a next
   => next..feature-a
 
 === from-upstream ===
 
 By default this mode is the equivalent of:
 
-  $ git smartlist from-upstream
+  $ git smartlist echo from-upstream
   => @{upstream}..@
 
 If there's no upstream configured, `master` is used by default.
 
 You can also specify the branch:
 
-  $ git smartlist from-upstream feature-a
+  $ git smartlist echo from-upstream feature-a
   => feature-a@{upstream}..feature-a
 
 === negate-upstreams ===
@@ -146,7 +146,7 @@ You can also specify the branch:
 This is the equivalent of multiple `from-upstream` commands; all their upstreams
 are negated:
 
-  $ git smartlist negate-upstreams next feature-a
+  $ git smartlist echo negate-upstreams next feature-a
   => next@{u}..next feature@{u}..feature
 
 == Configuration ==
@@ -156,7 +156,7 @@ are negated:
 === smartlist.merge-base ===
 
 Whether to use the merge-base functionality. If not set
-`git smartlist branches` would simply do `--branches`.
+the `branches` subcommand would simply do `--branches`.
 
 Default: true
 
