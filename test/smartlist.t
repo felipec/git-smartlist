@@ -18,8 +18,6 @@ test_commit () {
 }
 
 setup () {
-	git config --global --bool smartlist.friendly true &&
-
 	git init -q &&
 
 	test_commit one &&

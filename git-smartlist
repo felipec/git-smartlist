@@ -6,7 +6,7 @@ get_refs () {
 	[[ "$(git config --bool smartlist.merge-base)" == "false" ]] ||
 	merge_base=y
 
-	[[ "$(git config --bool smartlist.friendly)" == "true" ]] &&
+	[[ "$(git config --bool smartlist.friendly)" == "false" ]] ||
 	friendly=y
 
 	# shellcheck disable=SC2207
