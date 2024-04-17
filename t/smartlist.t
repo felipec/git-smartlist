@@ -154,4 +154,10 @@ test_expect_success 'specific: check revision range' '
 	EOF
 '
 
+test_expect_success 'specific: with option' '
+	test_smartlist specific --all <<-\EOF
+	--all --not feature~1
+	EOF
+'
+
 test_done

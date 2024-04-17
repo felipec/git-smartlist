@@ -59,7 +59,7 @@ negate_upstreams () {
 }
 
 get_specific () {
-	if [[ $# -lt 2 ]]; then
+	if [[ $# -lt 2 && $1 != -* ]]; then
 		get_from_upstream "$1"
 	else
 		get_refs $(parse_branches "$@")
