@@ -5,7 +5,7 @@ bindir := $(prefix)/bin
 all:
 
 test:
-	$(MAKE) -C test
+	$(MAKE) -C t
 
 D = $(DESTDIR)
 
